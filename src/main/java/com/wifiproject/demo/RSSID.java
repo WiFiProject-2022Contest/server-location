@@ -1,6 +1,6 @@
 package com.wifilocation.demo;
 
-public class RSSI {
+public class RSSID {
     private int pos_x;
     private int pos_y;
     private String SSID;
@@ -8,7 +8,7 @@ public class RSSI {
     private int frequency;
     private int level;
 
-    public RSSI(int pos_x, int pos_y, String SSID, String BSSID, int frequency, int level){
+    public RSSID(int pos_x, int pos_y, String SSID, String BSSID, int frequency, int level){
         this.pos_x = pos_x;
         this.pos_y = pos_y;
         this.SSID = SSID;
