@@ -13,20 +13,20 @@ public class RSSIController {
     @Autowired
     private RSSIMapper rssiMapper;
 
-    @GetMapping("/example") // get all Wifi Info
-    public RSSID getrssi(@RequestParam(value = "pos_x", defaultValue = "0") int pos_x, @RequestParam(value = "pos_y", defaultValue = "0") int pos_y) {
-        return new RSSID(1, pos_x, pos_y, "Test", "ff:ff:ff:ff:ff:ff", 2400, -50, new Date());
-    }
 
-    @GetMapping("/get")
+
+    @GetMapping("/rssi")
     public List<RSSID> getAll(){
         return rssiMapper.findAll();
     }
 
-    @PostMapping("/test")
-    public RSSID postMethod(@RequestBody RSSID rssid){
-        RSSID post = new RSSID(rssid.getPos_x(), rssid.getPos_y(), rssid.getSSID(), rssid.getBSSID(), rssid.getFrequency(), rssid.getLevel());
-        rssiMapper.insert(post);
-        return rssid;
+    @PostMapping("/rssi")
+    public List<RSSID> postMethod(@RequestParam(name = "pos_x") int pos_x, @RequestParam(name = "pos_y") int pos_y, @RequestBody List<RSSID> rssids){
+        for(int i=0; i<rssids.size(); i++){
+            rssids.get(i).setPos_x(pos_x);
+            rssids.get(i).setPos_y(pos_y);
+            rssiMapper.insert(rssids.get(i));
+        }
+        return rssids;
     }
 }
