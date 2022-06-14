@@ -1,12 +1,16 @@
 package com.wifilocation.demo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class RSSID {
     private int id;
     private int pos_x;
     private int pos_y;
+    @JsonProperty("SSID")
     private String SSID;
+    @JsonProperty("BSSID")
     private String BSSID;
     private int frequency;
     private int level;
@@ -23,6 +27,14 @@ public class RSSID {
         this.date = date;
     }
     public RSSID(){}
+    public RSSID(int pos_x, int pos_y, String SSID, String BSSID, int frequency, int level){
+        this.pos_x = pos_x;
+        this.pos_y = pos_y;
+        this.SSID = SSID;
+        this.BSSID = BSSID;
+        this.frequency = frequency;
+        this.level = level;
+    }
 
     public int getId() {
         return id;

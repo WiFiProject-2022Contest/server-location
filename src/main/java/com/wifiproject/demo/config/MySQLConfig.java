@@ -25,6 +25,5 @@ public class MySQLConfig {
         sessionFactory.setConfigLocation(myBatisConfig);
 
         return sessionFactory.getObject();
-
     }
 }
