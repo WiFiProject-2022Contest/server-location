@@ -28,6 +28,6 @@ public class RSSIController {
             rssiMapper.insert(rssids.get(i));
         }
 
-        return "{\"success\":\"true\"";
+        return "{\"success\":\"true\"}";
     }
 }
