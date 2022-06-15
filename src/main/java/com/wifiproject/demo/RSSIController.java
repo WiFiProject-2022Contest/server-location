@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +18,8 @@ public class RSSIController {
 
     @GetMapping("/rssi")
     public List<RSSID> getAll(){
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET");
         return rssiMapper.findAll();
     }
 
@@ -26,6 +30,9 @@ public class RSSIController {
             rssids.get(i).setPos_y(pos_y);
             rssiMapper.insert(rssids.get(i));
         }
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST");
+
         Result result = new Result(true);
         return result;
     }
