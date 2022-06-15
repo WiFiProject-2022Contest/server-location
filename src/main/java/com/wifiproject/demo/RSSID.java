@@ -6,8 +6,8 @@ import java.util.Date;
 
 public class RSSID {
     private int id;
-    private int pos_x;
-    private int pos_y;
+    private float pos_x;
+    private float pos_y;
     @JsonProperty("SSID")
     private String SSID;
     @JsonProperty("BSSID")
@@ -15,8 +15,17 @@ public class RSSID {
     private int frequency;
     private int level;
     private Date date;
+    private String uuid;
 
-    public RSSID(int id, int pos_x, int pos_y, String SSID, String BSSID, int frequency, int level, Date date){
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public RSSID(int id, float pos_x, float pos_y, String SSID, String BSSID, int frequency, int level, Date date, String uuid){
         this.id = id;
         this.pos_x = pos_x;
         this.pos_y = pos_y;
@@ -25,15 +34,17 @@ public class RSSID {
         this.frequency = frequency;
         this.level = level;
         this.date = date;
+        this.uuid = uuid;
     }
     public RSSID(){}
-    public RSSID(int pos_x, int pos_y, String SSID, String BSSID, int frequency, int level){
+    public RSSID(float pos_x, float pos_y, String SSID, String BSSID, int frequency, int level, String uuid){
         this.pos_x = pos_x;
         this.pos_y = pos_y;
         this.SSID = SSID;
         this.BSSID = BSSID;
         this.frequency = frequency;
         this.level = level;
+        this.uuid = uuid;
     }
 
     public int getId() {
@@ -44,11 +55,11 @@ public class RSSID {
         return date;
     }
 
-    public int getPos_x() {
+    public float getPos_x() {
         return pos_x;
     }
 
-    public int getPos_y() {
+    public float getPos_y() {
         return pos_y;
     }
 
@@ -72,11 +83,11 @@ public class RSSID {
         this.id = id;
     }
 
-    public void setPos_x(int pos_x) {
+    public void setPos_x(float pos_x) {
         this.pos_x = pos_x;
     }
 
-    public void setPos_y(int pos_y) {
+    public void setPos_y(float pos_y) {
         this.pos_y = pos_y;
     }
 

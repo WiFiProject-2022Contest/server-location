@@ -13,6 +13,6 @@ public interface RSSIMapper {
     @Select("SELECT * FROM wifiinfo")
     List<RSSID> findAll();
 
-    @Insert("INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level) VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level})")
+    @Insert("INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level, uuid) VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level}, #{uuid})")
     void insert(RSSID rssid);
 }
