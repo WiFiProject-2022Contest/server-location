@@ -16,11 +16,18 @@ public class RSSIController {
     @Autowired
     private RSSIMapper rssiMapper;
 
-    @GetMapping("/rssi")
+    @GetMapping("/rssi/all")
     public List<RSSID> getAll(){
         LocalDateTime now = LocalDateTime.now();
-        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET");
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET All Data");
         return rssiMapper.findAll();
+    }
+
+    @GetMapping("/rssi")
+    public List<RSSID> getAll(@RequestParam(name = "pos_x") float pos_x, @RequestParam(name = "pos_y") float pos_y){
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET data for (" + pos_x + ", " + pos_y + ")");
+        return rssiMapper.findPos((int)pos_x, (int)pos_y);
     }
 
     @PostMapping("/rssi")

@@ -14,18 +14,13 @@ public class RSSID {
     private String BSSID;
     private int frequency;
     private int level;
+    private String building;
     private Date date;
     private String uuid;
 
-    public String getUuid() {
-        return uuid;
-    }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
 
-    public RSSID(int id, float pos_x, float pos_y, String SSID, String BSSID, int frequency, int level, Date date, String uuid){
+    public RSSID(int id, float pos_x, float pos_y, String SSID, String BSSID, int frequency, int level, String building, Date date, String uuid){
         this.id = id;
         this.pos_x = pos_x;
         this.pos_y = pos_y;
@@ -33,17 +28,19 @@ public class RSSID {
         this.BSSID = BSSID;
         this.frequency = frequency;
         this.level = level;
+        this.building = building;
         this.date = date;
         this.uuid = uuid;
     }
     public RSSID(){}
-    public RSSID(float pos_x, float pos_y, String SSID, String BSSID, int frequency, int level, String uuid){
+    public RSSID(float pos_x, float pos_y, String SSID, String BSSID, int frequency, int level, String building, String uuid){
         this.pos_x = pos_x;
         this.pos_y = pos_y;
         this.SSID = SSID;
         this.BSSID = BSSID;
         this.frequency = frequency;
         this.level = level;
+        this.building = building;
         this.uuid = uuid;
     }
 
@@ -78,7 +75,13 @@ public class RSSID {
     public int getLevel() {
         return level;
     }
+    public String getBuilding() {
+        return building;
+    }
 
+    public String getUuid() {
+        return uuid;
+    }
     public void setId(int id) {
         this.id = id;
     }
@@ -109,5 +112,11 @@ public class RSSID {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }
