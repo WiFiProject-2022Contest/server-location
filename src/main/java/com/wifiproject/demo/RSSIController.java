@@ -24,8 +24,13 @@ public class RSSIController {
     }
 
     @GetMapping("/rssi")
-    public List<RSSID> getAll(@RequestParam(name = "pos_x") float pos_x, @RequestParam(name = "pos_y") float pos_y){
+    public List<RSSID> getPos(@RequestParam(name = "pos_x") float pos_x, @RequestParam(name = "pos_y") float pos_y){
         LocalDateTime now = LocalDateTime.now();
+
+        if(pos_x == -1 && pos_y == -1){
+            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET All Data");
+            return rssiMapper.findAll();
+        }
         System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET data for (" + pos_x + ", " + pos_y + ")");
         return rssiMapper.findPos((int)pos_x, (int)pos_y);
     }
