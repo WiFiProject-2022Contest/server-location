@@ -1,15 +1,16 @@
 package com.wifilocation.demo;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface RSSIMapper {
 
+    @Results(id = "allResultMap", value = {
+            @Result(property = "pos_x", column = "pos_x"),
+            @Result(property = "pos_y", column = "pos_y")
+    })
     @Select("SELECT * FROM wifiinfo")
     List<RSSID> findAll();
 
