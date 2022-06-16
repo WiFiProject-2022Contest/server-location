@@ -38,7 +38,7 @@ public class RSSIController {
             rssiMapper.insert(rssids.get(i));
         }
         LocalDateTime now = LocalDateTime.now();
-        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST");
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST " + rssids.size() + " data");
 
         Result result = new Result(true);
         return result;
