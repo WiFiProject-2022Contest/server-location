@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class RSSIController {
@@ -49,4 +50,22 @@ public class RSSIController {
         Result result = new Result(true);
         return result;
     }
+
+    @GetMapping("/rssi/delete")
+    public Result delete(@RequestParam(name = "auth", required = false) String key){
+        Result result = new Result(true);
+        LocalDateTime now = LocalDateTime.now();
+        if(Objects.equals(key, "wifilocation")){
+            rssiMapper.deleteAll();
+            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully Delete Whole Data");
+            rssiMapper.initiate();
+            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully Initiate Auto Increment");
+        }
+        else{
+            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tWrong Auth Key; '"+key+"' is not allowed.");
+            result.setSuccess(false);
+        }
+        return result;
+    }
+
 }

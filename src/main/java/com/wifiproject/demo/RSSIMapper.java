@@ -23,4 +23,10 @@ public interface RSSIMapper {
 
     @Insert("INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level, building, uuid) VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level}, #{building}, #{uuid})")
     void insert(RSSID rssid);
+
+    @Delete("DELETE FROM wifiinfo WHERE id > 0")
+    void deleteAll();
+
+    @Update("ALTER TABLE wifiinfo AUTO_INCREMENT=1")
+    void initiate();
 }
