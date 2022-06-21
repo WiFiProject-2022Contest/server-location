@@ -70,8 +70,8 @@ public class RSSIController {
 //    }
 
     @GetMapping("/rssi")
-    public List<RSSID> getPos(@RequestParam(name = "pos_x") float pos_x,
-                              @RequestParam(name = "pos_y") float pos_y,
+    public List<RSSID> getPos(@RequestParam(name = "pos_x", defaultValue = "-1") float pos_x,
+                              @RequestParam(name = "pos_y", defaultValue = "-1") float pos_y,
                               @RequestParam(name = "from", defaultValue = "20020202") String from,
                               @RequestParam(name = "to", defaultValue = "20300303") String to){
         LocalDateTime now = LocalDateTime.now();
