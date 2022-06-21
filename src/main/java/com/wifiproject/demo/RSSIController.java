@@ -6,8 +6,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -25,20 +28,79 @@ public class RSSIController {
         return rssiMapper.findAll();
     }
 
-    @GetMapping("/rssi")
-    public List<RSSID> getPos(@RequestParam(name = "pos_x") float pos_x, @RequestParam(name = "pos_y") float pos_y){
+    @GetMapping("/rssi/find")
+    public List<RSSID> getByParam(@RequestParam(name = "building", required = false) String building,
+                                  @RequestParam(name = "SSID", required = false) String SSID){
         LocalDateTime now = LocalDateTime.now();
-
-        if(pos_x == -1 && pos_y == -1){
-            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET All Data");
-            return rssiMapper.findAll();
+        if(building == null && SSID == null) {
+            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tRequire one of parameter;building or SSID");
+            return null;
         }
-        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET data for (" + pos_x + ", " + pos_y + ")");
-        return rssiMapper.findPos((int)pos_x, (int)pos_y);
+        else if(building == null) {
+            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET Data("+SSID+")");
+            return rssiMapper.findBySsid(SSID);
+        }
+        else if(SSID == null) {
+            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET Data("+building+")");
+            return rssiMapper.findByBuilding(building);
+        }
+        else {
+            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET Data("+SSID+" and "+building+")");
+            return rssiMapper.findByTwo(building, SSID);
+        }
+    }
+
+//    @GetMapping("/rssi/date")
+//    public List<RSSID> getByDate(@RequestParam(name = "from") String from,
+//                                 @RequestParam(name = "to") String to){
+//        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
+//        Date start = null, end = null;
+//        try{
+//            start = dateParser.parse(from);
+//            end = dateParser.parse(to);
+//            Calendar cal = Calendar.getInstance();
+//            cal.setTime(end);
+//            cal.add(Calendar.DATE, 1);
+//            end = new Date(cal.getTimeInMillis());
+//        } catch(ParseException e){
+//            e.printStackTrace();
+//        } finally {
+//            return rssiMapper.findByDate(start, end);
+//        }
+//    }
+
+    @GetMapping("/rssi")
+    public List<RSSID> getPos(@RequestParam(name = "pos_x") float pos_x,
+                              @RequestParam(name = "pos_y") float pos_y,
+                              @RequestParam(name = "from", defaultValue = "20020202") String from,
+                              @RequestParam(name = "to", defaultValue = "20300303") String to){
+        LocalDateTime now = LocalDateTime.now();
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
+        Date start = null, end = null;
+        try{
+            start = dateParser.parse(from);
+            end = dateParser.parse(to);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(end);
+            cal.add(Calendar.DATE, 1);
+            end = new Date(cal.getTimeInMillis());
+        } catch(ParseException e){
+            e.printStackTrace();
+        }
+        if(pos_x == -1 && pos_y == -1){
+            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET All Data\n\tFrom "+
+                    from+" To "+to);
+            return rssiMapper.findAllByDate(start, end);
+        }
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET data for (" + pos_x + ", " + pos_y + ")\n\tFrom "+
+                from+" To "+to);
+        return rssiMapper.findByDateAndPos((int)pos_x, (int)pos_y, start, end);
     }
 
     @PostMapping("/rssi")
-    public Result postMethod(@RequestParam(name = "pos_x") float pos_x, @RequestParam(name = "pos_y") float pos_y, @RequestBody List<RSSID> rssids){
+    public Result postMethod(@RequestParam(name = "pos_x") float pos_x,
+                             @RequestParam(name = "pos_y") float pos_y,
+                             @RequestBody List<RSSID> rssids){
         for(int i=0; i<rssids.size(); i++){
             rssids.get(i).setPos_x(pos_x);
             rssids.get(i).setPos_y(pos_y);
@@ -68,4 +130,13 @@ public class RSSIController {
         return result;
     }
 
+    @PostMapping("/fingerprint")
+    public Result insertEstimate(@RequestBody RSSID rssid){
+        rssiMapper.insertEstimate(rssid);
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST Estimated Pos (" + rssid.getPos_x() + "," + rssid.getPos_y() + ")");
+
+        Result result = new Result(true);
+        return result;
+    }
 }

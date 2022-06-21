@@ -8,9 +8,7 @@
             wifiinfo
     </select>
     <insert id="insert" parameterType="com.wifilocation.demo.RSSID">
-        <![CDATA[
-            INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level)
-            VALUE ('#{pos_x}', '#{pos_y}', '#{ssid}', '#{bssid}', '#{frequency}', '#{level}')
-        ]]>
+        INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level)
+        VALUE ('#{pos_x}', '#{pos_y}', '#{ssid}', '#{bssid}', '#{frequency}', '#{level}')
     </insert>
 </mapper>
