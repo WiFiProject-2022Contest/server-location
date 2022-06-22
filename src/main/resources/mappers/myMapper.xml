@@ -1,20 +1,20 @@
-        <?xml version="1.0" encoding="UTF-8"?>
-                <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-        <mapper namespace="com.wifilocation.demo.RSSIMapper">
-            <delete id="deleteDynamic">
-                DELETE FROM wifiinfo
-                WHERE date BETWEEN #{from} AND #{to}
-                <if test="building != null">
-                    AND building = #{building}
-                </if>
-                <if test="SSID != null">
-                    AND SSID = #{SSID}
-                </if>
-                <if test="uuid != null">
-                    AND uuid = #{uuid}
-                </if>
-            </delete>
-    <!--    <select id="findAll" resultType="com.wifilocation.demo.RSSID">-->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wifilocation.demo.RSSIMapper">
+    <delete id="deleteDynamic">
+        DELETE FROM wifiinfo
+        WHERE date BETWEEN #{from} AND #{to}
+        <if test="building != null">
+            AND building = #{building}
+        </if>
+        <if test="SSID != null">
+            AND SSID = #{SSID}
+        </if>
+        <if test="uuid != null">
+            AND uuid = #{uuid}
+        </if>
+    </delete>
+<!--    <select id="findAll" resultType="com.wifilocation.demo.RSSID">-->
 <!--        select-->
 <!--            *-->
 <!--        from-->
