@@ -1,5 +1,6 @@
 package com.wifilocation.demo;
 
+import com.wifilocation.demo.Model.Estimate;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
@@ -62,26 +63,27 @@ public interface RSSIMapper {
             "SSID = #{SSID} AND " +
             "date BETWEEN #{from} AND #{to}")
     List<RSSID> findByDateAndBuild(String building, String SSID, Date from, Date to);
+
+    @Results({
+            @Result(property = "pos_x", column = "pos_x"),
+            @Result(property = "pos_y", column = "pos_y")
+    })
+    @Select("SELECT * FROM fingerprint WHERE date BETWEEN #{from} AND #{to}")
+    List<Estimate> findEstimateByDate(Date from, Date to);
+
     // Date 범위와 building, SSID에 따른 검색
-
-
-//    @Results({
-//            @Result(property = "pos_x", column = "pos_x"),
-//            @Result(property = "pos_y", column = "pos_y")
-//    })
-//    @Select("SELECT * FROM wifiinfo WHERE pos_x >= #{pos_x} AND pos_x < #{pos_x} + 1 AND pos_y >= #{pos_y} AND pos_y < #{pos_y} + 1")
-//    List<RSSID> findPos(int pos_x, int pos_y);
-
     @Insert("INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level, building, uuid) " +
             "VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level}, #{building}, #{uuid})")
     void insert(RSSID rssid);
 
+    @Insert("INSERT fingerprint (pos_x, pos_y, uuid) VALUES (#{pos_x}, #{pos_y}, #{uuid})")
+    void insertEstimate(Estimate est);
+
     @Delete("DELETE FROM wifiinfo WHERE id > 0")
     void deleteAll();
 
+    void deleteDynamic(String building, String SSID, String uuid, Date from, Date to);
+
     @Update("ALTER TABLE wifiinfo AUTO_INCREMENT=1")
     void initiate();
-
-    @Insert("INSERT fingerprint (pos_x, pos_y, uuid) VALUES (#{pos_x}, #{pos_y}, #{uuid})")
-    void insertEstimate(RSSID rssid);
 }

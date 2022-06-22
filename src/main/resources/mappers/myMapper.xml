@@ -1,14 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wifilocation.demo.RSSIController">
-    <select id="findAll" resultType="com.wifilocation.demo.RSSID">
-        select
-            *
-        from
-            wifiinfo
-    </select>
-    <insert id="insert" parameterType="com.wifilocation.demo.RSSID">
-        INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level)
-        VALUE ('#{pos_x}', '#{pos_y}', '#{ssid}', '#{bssid}', '#{frequency}', '#{level}')
-    </insert>
+        <?xml version="1.0" encoding="UTF-8"?>
+                <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        <mapper namespace="com.wifilocation.demo.RSSIMapper">
+            <delete id="deleteDynamic">
+                DELETE FROM wifiinfo
+                WHERE date BETWEEN #{from} AND #{to}
+                <if test="building != null">
+                    AND building = #{building}
+                </if>
+                <if test="SSID != null">
+                    AND SSID = #{SSID}
+                </if>
+                <if test="uuid != null">
+                    AND uuid = #{uuid}
+                </if>
+            </delete>
+    <!--    <select id="findAll" resultType="com.wifilocation.demo.RSSID">-->
+<!--        select-->
+<!--            *-->
+<!--        from-->
+<!--            wifiinfo-->
+<!--    </select>-->
+<!--    <insert id="insert" parameterType="com.wifilocation.demo.RSSID">-->
+<!--        INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level)-->
+<!--        VALUE ('#{pos_x}', '#{pos_y}', '#{ssid}', '#{bssid}', '#{frequency}', '#{level}')-->
+<!--    </insert>-->
 </mapper>

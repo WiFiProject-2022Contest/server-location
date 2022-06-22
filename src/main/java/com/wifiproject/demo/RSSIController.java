@@ -1,5 +1,6 @@
 package com.wifilocation.demo;
 
+import com.wifilocation.demo.Model.Estimate;
 import com.wifilocation.demo.Model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -117,15 +118,32 @@ public class RSSIController {
         return result;
     }
 
+//    String building, String SSID, String uuid, Date from, Date to
     @GetMapping("/rssi/delete")
-    public Result delete(@RequestParam(name = "auth", required = false) String key){
+    public Result delete(@RequestParam(name = "auth", required = false) String key,
+                         @RequestParam(name = "building", required = false) String building,
+                         @RequestParam(name = "SSID", required = false) String SSID,
+                         @RequestParam(name = "uuid", required = false) String uuid,
+                         @RequestParam(name = "from", defaultValue = "20020202") String from,
+                         @RequestParam(name = "to", defaultValue = "20300303") String to){
         Result result = new Result(true);
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
+        Date start = null, end = null;
+        try{
+            start = dateParser.parse(from);
+            end = dateParser.parse(to);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(end);
+            cal.add(Calendar.DATE, 1);
+            end = new Date(cal.getTimeInMillis());
+        } catch(ParseException e){
+            e.printStackTrace();
+        }
         LocalDateTime now = LocalDateTime.now();
         if(Objects.equals(key, "wifilocation")){
-            rssiMapper.deleteAll();
-            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully Delete Whole Data");
-            rssiMapper.initiate();
-            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully Initiate Auto Increment");
+            rssiMapper.deleteDynamic(building, SSID, uuid, start, end);
+            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tDelete for " +
+                    building+", "+SSID+", "+uuid+" From "+from+" To "+to);
         }
         else{
             System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tWrong Auth Key; '"+key+"' is not allowed.");
@@ -134,11 +152,33 @@ public class RSSIController {
         return result;
     }
 
-    @PostMapping("/fingerprint")
-    public Result insertEstimate(@RequestBody RSSID rssid){
-        rssiMapper.insertEstimate(rssid);
+
+    @GetMapping("/fingerprint")
+    public List<Estimate> getEstimate(@RequestParam(name = "from", defaultValue = "20020202") String from,
+                                      @RequestParam(name = "to", defaultValue = "20300303") String to){
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
+        Date start = null, end = null;
+        try{
+            start = dateParser.parse(from);
+            end = dateParser.parse(to);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(end);
+            cal.add(Calendar.DATE, 1);
+            end = new Date(cal.getTimeInMillis());
+        } catch(ParseException e){
+            e.printStackTrace();
+        }
         LocalDateTime now = LocalDateTime.now();
-        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST Estimated Pos (" + rssid.getPos_x() + "," + rssid.getPos_y() + ")");
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET Estimated Data\n\tFrom "+
+                from+" To "+to);
+        return rssiMapper.findEstimateByDate(start, end);
+    }
+
+    @PostMapping("/fingerprint")
+    public Result insertEstimate(@RequestBody Estimate est){
+        rssiMapper.insertEstimate(est);
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST Estimated Pos (" + est.getPos_x() + "," + est.getPos_y() + ")");
 
         Result result = new Result(true);
         return result;
