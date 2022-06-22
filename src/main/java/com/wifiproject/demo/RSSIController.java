@@ -33,7 +33,7 @@ public class RSSIController {
                                   @RequestParam(name = "SSID", required = false) String SSID){
         LocalDateTime now = LocalDateTime.now();
         if(building == null && SSID == null) {
-            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tRequire one of parameter;building or SSID");
+            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tRequire at least one parameter;building or SSID");
             return null;
         }
         else if(building == null) {
@@ -49,25 +49,6 @@ public class RSSIController {
             return rssiMapper.findByTwo(building, SSID);
         }
     }
-
-//    @GetMapping("/rssi/date")
-//    public List<RSSID> getByDate(@RequestParam(name = "from") String from,
-//                                 @RequestParam(name = "to") String to){
-//        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
-//        Date start = null, end = null;
-//        try{
-//            start = dateParser.parse(from);
-//            end = dateParser.parse(to);
-//            Calendar cal = Calendar.getInstance();
-//            cal.setTime(end);
-//            cal.add(Calendar.DATE, 1);
-//            end = new Date(cal.getTimeInMillis());
-//        } catch(ParseException e){
-//            e.printStackTrace();
-//        } finally {
-//            return rssiMapper.findByDate(start, end);
-//        }
-//    }
 
     @GetMapping("/rssi")
     public List<RSSID> getPos(@RequestParam(name = "pos_x", defaultValue = "-1") float pos_x,
@@ -95,6 +76,29 @@ public class RSSIController {
         System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET data for (" + pos_x + ", " + pos_y + ")\n\tFrom "+
                 from+" To "+to);
         return rssiMapper.findByDateAndPos((int)pos_x, (int)pos_y, start, end);
+    }
+
+    @GetMapping("/rssi/estimate")
+    public List<RSSID> getSpecific(@RequestParam(name = "building") String building,
+                                   @RequestParam(name = "SSID") String SSID,
+                                   @RequestParam(name = "from", defaultValue = "20020202") String from,
+                                   @RequestParam(name = "to", defaultValue = "20300303") String to){
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
+        Date start = null, end = null;
+        try{
+            start = dateParser.parse(from);
+            end = dateParser.parse(to);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(end);
+            cal.add(Calendar.DATE, 1);
+            end = new Date(cal.getTimeInMillis());
+        } catch(ParseException e){
+            e.printStackTrace();
+        }
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET Data\n\tFrom "+
+                from+" To "+to+" / "+building + ", " + SSID);
+        return rssiMapper.findByDateAndBuild(building, SSID, start, end);
     }
 
     @PostMapping("/rssi")
