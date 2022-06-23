@@ -55,13 +55,7 @@ public interface RSSIMapper {
     List<RSSID> findByDateAndPos(int pos_x, int pos_y, Date from, Date to);
     // Date 범위와 좌표에 따른 검색
 
-    @Results({
-            @Result(property = "pos_x", column = "pos_x"),
-            @Result(property = "pos_y", column = "pos_y")
-    })
-    @Select("SELECT * FROM wifiinfo WHERE building = #{building} AND " +
-            "SSID = #{SSID} AND " +
-            "date BETWEEN #{from} AND #{to}")
+
     List<RSSID> findByDateAndBuild(String building, String SSID, Date from, Date to);
 
     @Results({

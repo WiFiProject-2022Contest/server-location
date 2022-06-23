@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wifilocation.demo.RSSIMapper">
+    <resultMap id="rssid" type="com.wifilocation.demo.RSSID">
+        <result column="pos_x" property="pos_x"></result>
+        <result column="pos_y" property="pos_y"></result>
+    </resultMap>
+
+    <select id="findByDateAndBuild" resultMap="rssid">
+        SELECT * FROM wifiinfo WHERE date BETWEEN #{from} AND #{to}
+        <if test="building != null">
+            AND building = #{building}
+        </if>
+        <if test="SSID != null">
+            AND SSID = #{SSID}
+        </if>
+    </select>
+
     <delete id="deleteDynamic">
         DELETE FROM wifiinfo
         WHERE date BETWEEN #{from} AND #{to}
@@ -14,6 +29,7 @@
             AND uuid = #{uuid}
         </if>
     </delete>
+
 <!--    <select id="findAll" resultType="com.wifilocation.demo.RSSID">-->
 <!--        select-->
 <!--            *-->

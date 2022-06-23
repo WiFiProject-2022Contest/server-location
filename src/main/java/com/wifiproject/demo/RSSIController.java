@@ -80,8 +80,8 @@ public class RSSIController {
     }
 
     @GetMapping("/rssi/estimate")
-    public List<RSSID> getSpecific(@RequestParam(name = "building") String building,
-                                   @RequestParam(name = "SSID") String SSID,
+    public List<RSSID> getSpecific(@RequestParam(name = "building", required = false) String building,
+                                   @RequestParam(name = "SSID", required = false) String SSID,
                                    @RequestParam(name = "from", defaultValue = "20020202") String from,
                                    @RequestParam(name = "to", defaultValue = "20300303") String to){
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
