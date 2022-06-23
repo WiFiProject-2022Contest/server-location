@@ -55,6 +55,8 @@ public interface RSSIMapper {
     List<RSSID> findByDateAndPos(int pos_x, int pos_y, Date from, Date to);
     // Date 범위와 좌표에 따른 검색
 
+    List<RSSID> findDynamic(int pos_x, int pos_y, String building, String SSID, Date from, Date to);
+
 
     List<RSSID> findByDateAndBuild(String building, String SSID, Date from, Date to);
 

@@ -54,6 +54,8 @@ public class RSSIController {
     @GetMapping("/rssi")
     public List<RSSID> getPos(@RequestParam(name = "pos_x", defaultValue = "-1") float pos_x,
                               @RequestParam(name = "pos_y", defaultValue = "-1") float pos_y,
+                              @RequestParam(name = "building", required = false) String building,
+                              @RequestParam(name = "SSID", required = false) String SSID,
                               @RequestParam(name = "from", defaultValue = "20020202") String from,
                               @RequestParam(name = "to", defaultValue = "20300303") String to){
         LocalDateTime now = LocalDateTime.now();
@@ -69,14 +71,9 @@ public class RSSIController {
         } catch(ParseException e){
             e.printStackTrace();
         }
-        if(pos_x == -1 && pos_y == -1){
-            System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET All Data\n\tFrom "+
-                    from+" To "+to);
-            return rssiMapper.findAllByDate(start, end);
-        }
         System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET data for (" + pos_x + ", " + pos_y + ")\n\tFrom "+
-                from+" To "+to);
-        return rssiMapper.findByDateAndPos((int)pos_x, (int)pos_y, start, end);
+                from+" To "+to+" At " + building +", " +SSID);
+        return rssiMapper.findDynamic((int)pos_x, (int)pos_y,building, SSID, start, end);
     }
 
     @GetMapping("/rssi/estimate")

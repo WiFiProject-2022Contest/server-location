@@ -6,8 +6,12 @@
         <result column="pos_y" property="pos_y"></result>
     </resultMap>
 
-    <select id="findByDateAndBuild" resultMap="rssid">
+    <select id="findDynamic" resultMap="rssid">
         SELECT * FROM wifiinfo WHERE date BETWEEN #{from} AND #{to}
+        <if test="pos_x != -1 or pos_y != -1">
+            AND pos_x BETWEEN #{pos_x} AND #{pos_x}+1
+            AND pos_y BETWEEN #{pos_y} AND #{pos_y}+1
+        </if>
         <if test="building != null">
             AND building = #{building}
         </if>
