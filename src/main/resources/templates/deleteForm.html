@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="/rssi/delete" method="get" onsubmit="return test()">
+
+        auth : <input type="text" name="auth" placeholder="auth key"><br>
+        building :<input type="text" name="building" placeholder="building"><br>
+        SSID : <input type="text" name="SSID" placeholder="SSID"><br>
+        uuid : <input type="text" name="uuid" placeholder="uuid"><br>
+        from : <input type="text" name="from" placeholder="20020202"><br>
+        to : <input type="text" name="to" placeholder="20300303"><br>
+        <input type="submit" id="changeAction" value="SUBMIT">
+        <input type="reset" id="reset" value="RESET">
+    </form>
+
+    <div style="border: 2px black solid; padding-left: 20px">
+        <h4>이용 가이드</h4>
+        <p>
+            auth에 <strong>wifilocation</strong>를 입력해야 delete 요청이 정상적으로 동작함.<br>
+            submit 이후 공란에 대해 disable 시키는데, reset하면 모두 해결됨.
+        </p>
+    </div>
+
+    <script>
+        let submit = document.getElementById("changeAction");
+        submit.addEventListener("click", function (){
+            let data = document.getElementsByTagName("input");
+            for(let i = 0; i<data.length; i++){
+                if(data[i].value === "") {
+                    data[i].setAttribute("disabled", "disabled");
+                }
+            }
+        });
+
+        let reset = document.getElementById("reset");
+        reset.addEventListener("click", function (){
+            let data = document.getElementsByTagName("input");
+            for(let i = 0; i<data.length; i++){
+                if(data[i].getAttribute("disabled") === "disabled") {
+                    data[i].removeAttribute("disabled");
+                }
+            }
+        })
+
+        function test(){
+            confirm('입력한 정보가 맞는지 다시 한번 확인하십시오.');
+        }
+    </script>
+</body>
+</html>

@@ -66,7 +66,9 @@ public interface RSSIMapper {
 
     @Results({
             @Result(property = "pos_x", column = "pos_x"),
-            @Result(property = "pos_y", column = "pos_y")
+            @Result(property = "pos_y", column = "pos_y"),
+            @Result(property = "est_x", column = "est_x"),
+            @Result(property = "est_y", column = "est_y")
     })
     @Select("SELECT * FROM fingerprint WHERE date BETWEEN #{from} AND #{to}")
     List<Estimate> findEstimateByDate(Date from, Date to);
@@ -76,14 +78,8 @@ public interface RSSIMapper {
             "VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level}, #{building}, #{uuid})")
     void insert(RSSID rssid);
 
-    @Insert("INSERT fingerprint (pos_x, pos_y, uuid) VALUES (#{pos_x}, #{pos_y}, #{uuid})")
+    @Insert("INSERT fingerprint (pos_x, pos_y, uuid, est_x, est_y, k, threshold) VALUES (#{pos_x}, #{pos_y}, #{uuid}, #{est_x}, #{est_y}, #{k}, #{threshold})")
     void insertEstimate(Estimate est);
 
-    @Delete("DELETE FROM wifiinfo WHERE id > 0")
-    void deleteAll();
-
     void deleteDynamic(String building, String SSID, String uuid, Date from, Date to);
-
-    @Update("ALTER TABLE wifiinfo AUTO_INCREMENT=1")
-    void initiate();
 }
