@@ -2,6 +2,7 @@ package com.wifilocation.demo;
 
 import com.wifilocation.demo.Model.Estimate;
 import org.apache.ibatis.annotations.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @Mapper
 public interface RSSIMapper {
 
+    // wifiinfo
     @Results({
             @Result(property = "pos_x", column = "pos_x"),
             @Result(property = "pos_y", column = "pos_y")
@@ -60,6 +62,15 @@ public interface RSSIMapper {
 
     List<RSSID> findByDateAndBuild(String building, String SSID, Date from, Date to);
 
+    // Date 범위와 building, SSID에 따른 검색
+
+    @Insert("INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level, building, uuid) " +
+            "VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level}, #{building}, #{uuid})")
+    void insert(RSSID rssid);
+    void deleteDynamic(String building, String SSID, String uuid, Date from, Date to);
+
+    // Fingerprint
+
     @Results({
             @Result(property = "pos_x", column = "pos_x"),
             @Result(property = "pos_y", column = "pos_y"),
@@ -69,13 +80,7 @@ public interface RSSIMapper {
     @Select("SELECT * FROM fingerprint WHERE date BETWEEN #{from} AND #{to}")
     List<Estimate> findEstimateByDate(Date from, Date to);
 
-    // Date 범위와 building, SSID에 따른 검색
-    @Insert("INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level, building, uuid) " +
-            "VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level}, #{building}, #{uuid})")
-    void insert(RSSID rssid);
-
-    @Insert("INSERT fingerprint (pos_x, pos_y, uuid, est_x, est_y, k, threshold) VALUES (#{pos_x}, #{pos_y}, #{uuid}, #{est_x}, #{est_y}, #{k}, #{threshold})")
+    @Insert("INSERT fingerprint (pos_x, pos_y, uuid, est_x, est_y, k, threshold, building, SSID, method, algorithmVersion) " +
+            "VALUES (#{pos_x}, #{pos_y}, #{uuid}, #{est_x}, #{est_y}, #{k}, #{threshold}, #{building}, #{SSID}, #{method}, #{algorithmVersion})")
     void insertEstimate(Estimate est);
-
-    void deleteDynamic(String building, String SSID, String uuid, Date from, Date to);
 }
