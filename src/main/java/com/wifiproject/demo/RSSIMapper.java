@@ -64,8 +64,8 @@ public interface RSSIMapper {
 
     // Date 범위와 building, SSID에 따른 검색
 
-    @Insert("INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level, building, uuid) " +
-            "VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level}, #{building}, #{uuid})")
+    @Insert("INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level, building, uuid, method) " +
+            "VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level}, #{building}, #{uuid}, #{method})")
     void insert(RSSID rssid);
     void deleteDynamic(String building, String SSID, String uuid, Date from, Date to);
 
