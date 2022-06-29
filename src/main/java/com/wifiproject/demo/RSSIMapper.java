@@ -80,7 +80,6 @@ public interface RSSIMapper {
     @Select("SELECT * FROM fingerprint WHERE date BETWEEN #{from} AND #{to}")
     List<Estimate> findEstimateByDate(Date from, Date to);
 
-    @Insert("INSERT fingerprint (pos_x, pos_y, uuid, est_x, est_y, k, threshold, building, SSID, method, algorithmVersion) " +
-            "VALUES (#{pos_x}, #{pos_y}, #{uuid}, #{est_x}, #{est_y}, #{k}, #{threshold}, #{building}, #{SSID}, #{method}, #{algorithmVersion})")
+
     void insertEstimate(Estimate est);
 }

@@ -6,6 +6,19 @@
         <result column="pos_y" property="pos_y"></result>
     </resultMap>
 
+    <insert id="insertEstimate" parameterType="com.wifilocation.demo.Model.Estimate">
+        <choose>
+            <when test="date == null">
+                INSERT fingerprint (pos_x, pos_y, uuid, est_x, est_y, k, threshold, building, SSID, method, algorithmVersion)
+                VALUES (#{pos_x}, #{pos_y}, #{uuid}, #{est_x}, #{est_y}, #{k}, #{threshold}, #{building}, #{SSID}, #{method}, #{algorithmVersion})
+            </when>
+            <otherwise>
+                INSERT fingerprint (pos_x, pos_y, uuid, est_x, est_y, k, threshold, building, SSID, method, algorithmVersion, date)
+                VALUES (#{pos_x}, #{pos_y}, #{uuid}, #{est_x}, #{est_y}, #{k}, #{threshold}, #{building}, #{SSID}, #{method}, #{algorithmVersion}, #{date})
+            </otherwise>
+        </choose>
+        </insert>
+
     <select id="findDynamic" resultMap="rssid">
         SELECT * FROM wifiinfo WHERE date BETWEEN #{from} AND #{to}
         <if test="pos_x != -1 or pos_y != -1">

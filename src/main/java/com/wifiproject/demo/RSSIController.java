@@ -172,10 +172,12 @@ public class RSSIController {
     }
 
     @PostMapping("/fingerprint")
-    public Result insertEstimate(@RequestBody Estimate est){
-        rssiMapper.insertEstimate(est);
+    public Result insertEstimate(@RequestBody List<Estimate> est){
+        for(int i=0; i<est.size(); i++){
+            rssiMapper.insertEstimate(est.get(i));
+        }
         LocalDateTime now = LocalDateTime.now();
-        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST Estimated Pos (" + est.getPos_x() + "," + est.getPos_y() + ")");
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST " + est.size() + " Estimated data");
 
         Result result = new Result(true);
         return result;
