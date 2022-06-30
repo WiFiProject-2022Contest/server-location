@@ -1,12 +1,12 @@
-package com.wifilocation.demo;
+package com.wifilocation.demo.controller;
 
-import com.wifilocation.demo.Model.Estimate;
-import com.wifilocation.demo.Model.Result;
+import com.wifilocation.demo.RSSIMapper;
+import com.wifilocation.demo.model.Estimate;
+import com.wifilocation.demo.model.RSSID;
+import com.wifilocation.demo.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -100,12 +100,8 @@ public class RSSIController {
     }
 
     @PostMapping("/rssi")
-    public Result postMethod(@RequestParam(name = "pos_x") float pos_x,
-                             @RequestParam(name = "pos_y") float pos_y,
-                             @RequestBody List<RSSID> rssids){
+    public Result postMethod(@RequestBody List<RSSID> rssids){
         for(int i=0; i<rssids.size(); i++){
-            rssids.get(i).setPos_x(pos_x);
-            rssids.get(i).setPos_y(pos_y);
             rssiMapper.insert(rssids.get(i));
         }
         LocalDateTime now = LocalDateTime.now();

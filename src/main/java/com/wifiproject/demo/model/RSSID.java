@@ -1,8 +1,7 @@
-package com.wifilocation.demo;
+package com.wifilocation.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class RSSID {

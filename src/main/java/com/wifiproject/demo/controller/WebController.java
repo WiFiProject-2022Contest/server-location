@@ -1,4 +1,4 @@
-package com.wifilocation.demo;
+package com.wifilocation.demo.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

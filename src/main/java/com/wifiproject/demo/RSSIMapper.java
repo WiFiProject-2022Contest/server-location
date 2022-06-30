@@ -1,8 +1,8 @@
 package com.wifilocation.demo;
 
-import com.wifilocation.demo.Model.Estimate;
+import com.wifilocation.demo.model.Estimate;
+import com.wifilocation.demo.model.RSSID;
 import org.apache.ibatis.annotations.*;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;

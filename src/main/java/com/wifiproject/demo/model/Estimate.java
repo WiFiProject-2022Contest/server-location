@@ -1,4 +1,4 @@
-package com.wifilocation.demo.Model;
+package com.wifilocation.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
