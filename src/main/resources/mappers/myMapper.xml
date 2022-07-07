@@ -6,6 +6,19 @@
         <result column="pos_y" property="pos_y"></result>
     </resultMap>
 
+    <insert id="insert" parameterType="com.wifilocation.demo.model.RSSID">
+        <choose>
+            <when test="date == null">
+                INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level, building, uuid, method)
+                VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level}, #{building}, #{uuid}, #{method})
+            </when>
+            <otherwise>
+                INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level, building, uuid, method, date)
+                VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level}, #{building}, #{uuid}, #{method}, #{date})
+            </otherwise>
+        </choose>
+    </insert>
+
     <insert id="insertEstimate" parameterType="com.wifilocation.demo.model.Estimate">
         <choose>
             <when test="date == null">
