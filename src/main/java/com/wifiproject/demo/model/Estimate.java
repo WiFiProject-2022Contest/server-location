@@ -13,7 +13,7 @@ public class Estimate {
     private String building;
     @JsonProperty
     private String SSID;
-    private long date;
+    private Date date;
     private String uuid;
     private int k;
     private int threshold;
@@ -25,7 +25,7 @@ public class Estimate {
     }
 
     // AllArgs
-    public Estimate(int id, float pos_x, float pos_y, float est_x, float est_y, String building, String SSID, long date, String uuid, int k, int threshold, int algorithmVersion, String method) {
+    public Estimate(int id, float pos_x, float pos_y, float est_x, float est_y, String building, String SSID, Date date, String uuid, int k, int threshold, int algorithmVersion, String method) {
         this.id = id;
         this.pos_x = pos_x;
         this.pos_y = pos_y;
@@ -111,11 +111,11 @@ public class Estimate {
         this.SSID = SSID;
     }
 
-    public long getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

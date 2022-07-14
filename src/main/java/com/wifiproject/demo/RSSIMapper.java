@@ -75,7 +75,7 @@ public interface RSSIMapper {
             @Result(property = "est_x", column = "est_x"),
             @Result(property = "est_y", column = "est_y")
     })
-    @Select("SELECT id, pos_x, pos_y, est_x, est_y, building, SSID, UNIX_TIMESTAMP(date) as date, uuid, k, threshold, method, algorithmVersion FROM fingerprint WHERE date BETWEEN #{from} AND #{to}")
+    @Select("SELECT id, pos_x, pos_y, est_x, est_y, building, SSID, date, uuid, k, threshold, method, algorithmVersion FROM fingerprint WHERE date BETWEEN #{from} AND #{to}")
     List<Estimate> findEstimateByDate(Date from, Date to);
 
 
