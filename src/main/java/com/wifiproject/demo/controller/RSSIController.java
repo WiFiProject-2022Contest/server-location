@@ -58,7 +58,7 @@ public class RSSIController {
                               @RequestParam(name = "SSID", required = false) String SSID,
                               @RequestParam(name = "from", defaultValue = "20020202") String from,
                               @RequestParam(name = "to", defaultValue = "20300303") String to){
-        LocalDateTime now = LocalDateTime.now();
+        long tmp = System.currentTimeMillis();
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
         Date start = null, end = null;
         try{
@@ -71,8 +71,10 @@ public class RSSIController {
         } catch(ParseException e){
             e.printStackTrace();
         }
+        LocalDateTime now = LocalDateTime.now();
         System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET data for (" + pos_x + ", " + pos_y + ")\n\tFrom "+
-                from+" To "+to+" At " + building +", " +SSID);
+                from+" To "+to+" At " + building +", " +SSID+
+                "\n\t\t" + (System.currentTimeMillis() - tmp));
         return rssiMapper.findDynamic((int)pos_x, (int)pos_y,building, SSID, start, end);
     }
 
@@ -101,12 +103,11 @@ public class RSSIController {
 
     @PostMapping("/rssi")
     public Result postMethod(@RequestBody List<RSSID> rssids){
-        for(int i=0; i<rssids.size(); i++){
-            rssiMapper.insert(rssids.get(i));
-        }
+        long tmp = System.currentTimeMillis();
+        rssiMapper.insert(rssids);
         LocalDateTime now = LocalDateTime.now();
-        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST " + rssids.size() + " data");
-
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST " + rssids.size() + " data\n\t\t"
+                + (System.currentTimeMillis() - tmp));
         Result result = new Result(true);
         return result;
     }
@@ -169,9 +170,7 @@ public class RSSIController {
 
     @PostMapping("/fingerprint")
     public Result insertEstimate(@RequestBody List<Estimate> est){
-        for(int i=0; i<est.size(); i++){
-            rssiMapper.insertEstimate(est.get(i));
-        }
+        rssiMapper.insertEstimate(est);
         LocalDateTime now = LocalDateTime.now();
         System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST " + est.size() + " Estimated data");
 

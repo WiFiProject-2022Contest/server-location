@@ -7,29 +7,35 @@
     </resultMap>
 
     <insert id="insert" parameterType="com.wifilocation.demo.model.RSSID">
-        <choose>
-            <when test="date == null">
-                INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level, building, uuid, method)
-                VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level}, #{building}, #{uuid}, #{method})
-            </when>
-            <otherwise>
-                INSERT wifiinfo (pos_x, pos_y, SSID, BSSID, frequency, level, building, uuid, method, date)
-                VALUES (#{pos_x}, #{pos_y}, #{SSID}, #{BSSID}, #{frequency}, #{level}, #{building}, #{uuid}, #{method}, #{date})
-            </otherwise>
-        </choose>
+        INSERT
+                test (pos_x, pos_y, SSID, BSSID, frequency, level, building, uuid, method, date)
+        VALUES
+                <foreach collection="list" item="item" separator=",">
+                    <choose>
+                        <when test="item.date == null">
+                            (#{item.pos_x}, #{item.pos_y}, #{item.SSID}, #{item.BSSID}, #{item.frequency}, #{item.level}, #{item.building}, #{item.uuid}, #{item.method}, NOW())
+                        </when>
+                        <otherwise>
+                            (#{item.pos_x}, #{item.pos_y}, #{item.SSID}, #{item.BSSID}, #{item.frequency}, #{item.level}, #{item.building}, #{item.uuid}, #{item.method}, #{item.date})
+                        </otherwise>
+                    </choose>
+                </foreach>
     </insert>
 
     <insert id="insertEstimate" parameterType="com.wifilocation.demo.model.Estimate">
-        <choose>
-            <when test="date == null">
-                INSERT fingerprint (pos_x, pos_y, uuid, est_x, est_y, k, threshold, building, SSID, method, algorithmVersion)
-                VALUES (#{pos_x}, #{pos_y}, #{uuid}, #{est_x}, #{est_y}, #{k}, #{threshold}, #{building}, #{SSID}, #{method}, #{algorithmVersion})
-            </when>
-            <otherwise>
-                INSERT fingerprint (pos_x, pos_y, uuid, est_x, est_y, k, threshold, building, SSID, method, algorithmVersion, date)
-                VALUES (#{pos_x}, #{pos_y}, #{uuid}, #{est_x}, #{est_y}, #{k}, #{threshold}, #{building}, #{SSID}, #{method}, #{algorithmVersion}, #{date})
-            </otherwise>
-        </choose>
+        INSERT
+                fingerprint(pos_x, pos_y, uuid, est_x, est_y, k, threshold, building, SSID, method, algorithmVersion, date)
+        VALUES
+                <foreach collection="list" item="item" separator=",">
+                    <choose>
+                        <when test="item.date == null">
+                            (#{item.pos_x}, #{item.pos_y}, #{item.uuid}, #{item.est_x}, #{item.est_y}, #{item.k}, #{item.threshold}, #{item.building}, #{item.SSID}, #{item.method}, #{item.algorithmVersion}, NOW())
+                        </when>
+                        <otherwise>
+                            (#{item.pos_x}, #{item.pos_y}, #{item.uuid}, #{item.est_x}, #{item.est_y}, #{item.k}, #{item.threshold}, #{item.building}, #{item.SSID}, #{item.method}, #{item.algorithmVersion}, #{item.date})
+                        </otherwise>
+                    </choose>
+                </foreach>
         </insert>
 
     <select id="findDynamic" resultMap="rssid">

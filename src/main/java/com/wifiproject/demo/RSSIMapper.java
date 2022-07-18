@@ -64,7 +64,8 @@ public interface RSSIMapper {
 
     // Date 범위와 building, SSID에 따른 검색
 
-    void insert(RSSID rssid);
+    void insert(List<RSSID> rssid);
+//    void insert(RSSID rssid);
     void deleteDynamic(String building, String SSID, String uuid, Date from, Date to);
 
     // Fingerprint
@@ -79,5 +80,5 @@ public interface RSSIMapper {
     List<Estimate> findEstimateByDate(Date from, Date to);
 
 
-    void insertEstimate(Estimate est);
+    void insertEstimate(List<Estimate> est);
 }
