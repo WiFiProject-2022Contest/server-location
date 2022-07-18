@@ -104,7 +104,9 @@ public class RSSIController {
     @PostMapping("/rssi")
     public Result postMethod(@RequestBody List<RSSID> rssids){
         long tmp = System.currentTimeMillis();
-        rssiMapper.insert(rssids);
+        if(rssids.size() != 0) {
+            rssiMapper.insert(rssids);
+        }
         LocalDateTime now = LocalDateTime.now();
         System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST " + rssids.size() + " data\n\t\t"
                 + (System.currentTimeMillis() - tmp));
@@ -170,7 +172,9 @@ public class RSSIController {
 
     @PostMapping("/fingerprint")
     public Result insertEstimate(@RequestBody List<Estimate> est){
-        rssiMapper.insertEstimate(est);
+        if(est.size() != 0) {
+            rssiMapper.insertEstimate(est);
+        }
         LocalDateTime now = LocalDateTime.now();
         System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST " + est.size() + " Estimated data");
 
