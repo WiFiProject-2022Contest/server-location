@@ -66,7 +66,7 @@ public interface RSSIMapper {
 
     void insert(List<RSSID> rssid);
 //    void insert(RSSID rssid);
-    void deleteDynamic(String building, String SSID, String uuid, Date from, Date to);
+    int deleteDynamic(String building, String SSID, String uuid, Date from, Date to);
 
     // Fingerprint
 
@@ -79,6 +79,8 @@ public interface RSSIMapper {
     @Select("SELECT id, pos_x, pos_y, est_x, est_y, building, SSID, date, uuid, k, threshold, method, algorithmVersion FROM fingerprint WHERE date BETWEEN #{from} AND #{to}")
     List<Estimate> findEstimateByDate(Date from, Date to);
 
+    @Select("SELECT * FROM fingerprint WHERE uuid=#{uuid} and DATE(date)=#{date}")
+    List<Estimate> findEstimateByUuidAndDate(String uuid, String date);
 
     void insertEstimate(List<Estimate> est);
 }
