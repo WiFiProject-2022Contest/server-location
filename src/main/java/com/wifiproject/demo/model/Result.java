@@ -3,7 +3,7 @@ package com.wifilocation.demo.model;
 
 public class Result {
     private boolean success;
-    private int number;
+    private int count;
 
     public boolean isSuccess() {
         return success;
@@ -13,19 +13,19 @@ public class Result {
         this.success = success;
     }
 
-    public int getNumber() {
-        return number;
+    public int getCount() {
+        return count;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public Result() {
     }
 
-    public Result(boolean success, int number) {
+    public Result(boolean success, int count) {
         this.success = success;
-        this.number = number;
+        this.count = count;
     }
 }

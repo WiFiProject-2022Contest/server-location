@@ -135,11 +135,11 @@ public class RSSIController {
             System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tDelete for " +
                     building + ", " + SSID + ", " + uuid + " From " + from + " To " + to);
             result.setSuccess(true);
-            result.setNumber(num);
+            result.setCount(num);
         } else {
             System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tWrong Auth Key; '" + key + "' is not allowed.");
             result.setSuccess(false);
-            result.setNumber(-1);
+            result.setCount(-1);
         }
         return result;
     }
