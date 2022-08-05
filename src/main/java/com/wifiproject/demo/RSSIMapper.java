@@ -1,5 +1,6 @@
 package com.wifilocation.demo;
 
+import com.wifilocation.demo.model.Barcode;
 import com.wifilocation.demo.model.Estimate;
 import com.wifilocation.demo.model.RSSID;
 import org.apache.ibatis.annotations.*;
@@ -70,7 +71,7 @@ public interface RSSIMapper {
 
     // Fingerprint
 
-    @Results({
+    @Results(value = {
             @Result(property = "pos_x", column = "pos_x"),
             @Result(property = "pos_y", column = "pos_y"),
             @Result(property = "est_x", column = "est_x"),
@@ -83,4 +84,14 @@ public interface RSSIMapper {
     List<Estimate> findEstimateByUuidAndDate(String uuid, String date);
 
     void insertEstimate(List<Estimate> est);
+
+    @Results({
+            @Result(property = "pos_x", column = "pos_x"),
+            @Result(property = "pos_y", column = "pos_y"),
+            @Result(property = "barcode_serial", column = "barcode_serial")
+    })
+    @Select("SELECT * FROM barcode WHERE date BETWEEN #{from} AND #{to}")
+    List<Barcode> findBarcodeByDate(Date from, Date to);
+
+    void insertBarcode(List<Barcode> barcodes);
 }

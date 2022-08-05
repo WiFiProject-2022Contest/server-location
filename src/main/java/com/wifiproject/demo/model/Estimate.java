@@ -1,5 +1,6 @@
 package com.wifilocation.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
@@ -11,7 +12,7 @@ public class Estimate {
     private float est_x;
     private float est_y;
     private String building;
-    @JsonProperty
+    @JsonProperty("SSID")
     private String SSID;
     private Date date;
     private String uuid;
@@ -102,11 +103,9 @@ public class Estimate {
     public void setBuilding(String building) {
         this.building = building;
     }
-
     public String getSSID() {
         return SSID;
     }
-
     public void setSSID(String SSID) {
         this.SSID = SSID;
     }

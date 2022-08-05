@@ -1,6 +1,7 @@
 package com.wifilocation.demo.controller;
 
 import com.wifilocation.demo.RSSIMapper;
+import com.wifilocation.demo.model.Barcode;
 import com.wifilocation.demo.model.Estimate;
 import com.wifilocation.demo.model.RSSID;
 import com.wifilocation.demo.model.Result;
@@ -189,8 +190,38 @@ public class RSSIController {
         return result;
     }
 
-    @GetMapping("/test")
-    public int test(@RequestParam(name = "uuid")String uuid, @RequestParam(name = "date") String date){
-        return rssiMapper.findEstimateByUuidAndDate(uuid, date).size();
+    @GetMapping("/barcode")
+    public List<Barcode> getBarcode(@RequestParam(name = "from", defaultValue = "20020202") String from,
+                                    @RequestParam(name = "to", defaultValue = "20300303") String to){
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
+        Date start = null, end = null;
+        try {
+            start = dateParser.parse(from);
+            end = dateParser.parse(to);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(end);
+            cal.add(Calendar.DATE, 1);
+            end = new Date(cal.getTimeInMillis());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully GET Barcode pos Data\n\tFrom " +
+                from + " To " + to);
+        return rssiMapper.findBarcodeByDate(start, end);
+    }
+
+    @PostMapping("/barcode")
+    public Result insertBarcode(@RequestBody List<Barcode> barcodes) {
+        int size = 0;
+        if (barcodes.size() != 0) {
+            rssiMapper.insertBarcode(barcodes);
+            size = barcodes.size();
+        }
+        LocalDateTime now = LocalDateTime.now();
+
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + "\t\tSuccessfully POST " + size + " Barcode pos data");
+        Result result = new Result(true, size);
+        return result;
     }
 }
